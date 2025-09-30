@@ -1,0 +1,9 @@
+import camion.*
+import cosas.*
+
+describe "Tests de Camion" {
+  test "el camión tiene las cosas cargadas" {
+    camion.cargar(knightRider)
+    assert.equals(#{knightRider}, camion.cosas())
+  }
+}
