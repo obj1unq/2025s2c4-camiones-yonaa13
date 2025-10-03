@@ -48,6 +48,7 @@ object residuoRadiactivo {
 	method nivelPeligrosidad() = 200
 }
 
+
 object contenedorPortuario {
 	var contenedor = #{}
 	

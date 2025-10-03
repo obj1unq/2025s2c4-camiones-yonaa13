@@ -29,4 +29,23 @@ describe "Tests de Camion" {
     camion.cargar(knightRider)
     assert.equals(false, camion.estaExcedidoDePeso())
   }
+  
+  test "peso de contenedor portuario vacio es 100" {
+    assert.equals(100, contenedorPortuario.peso())
+  }
+  
+  test "peligrosidad de contenedor portuario vacio es 0" {
+    assert.equals(0, contenedorPortuario.nivelPeligrosidad())
+  }
+  
+  test "el camion tiene un peso entre 400 y 700" {
+    camion.cargar(knightRider)
+    assert.equals(true, camion.pesaEntre(400, 700))
+  }
+  
+  test "cosa mas pesada del camion (bumblebee )" {
+    camion.cargar(knightRider)
+    camion.cargar(bumblebee)
+    assert.equals(bumblebee, camion.cosaMasPesadaDelCamion())
+  }
 }

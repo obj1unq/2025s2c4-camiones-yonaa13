@@ -52,6 +52,18 @@ object camion {
 	method puedeCircular(
 		nivelPeligrosidad
 	) = (!self.estaExcedidoDePeso()) && (!self.tieneMayorNivelDePeligrosidad(nivelPeligrosidad))
+	
+	method pesaEntre(pesoMinimo, pesoMaximo) = cosas.any(
+		{ cosa => (cosa.peso() >= pesoMinimo) && (cosa.peso() <= pesoMaximo) }
+	)
+	
+	method cosaMasPesadaDelCamion() {
+		if (cosas.isEmpty()) {
+			return null
+		} else {
+			return cosas.max({ cosa => cosa.peso() })
+		}
+	}
 }
 
 object destino {
