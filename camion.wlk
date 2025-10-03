@@ -2,7 +2,8 @@ import cosas.*
 
 object camion {
 	var property cosas = #{}
-	var property capacidad = 1700
+	var property capacidad = 2500
+	const tara = 1000
 	
 	method tieneCargado(unaCosa) = cosas.contains(unaCosa)
 	
@@ -19,4 +20,40 @@ object camion {
 			capacidad += unaCosa.peso()
 		}
 	}
+	
+	method esCamionConPesoPar() {
+		var suma = 0
+		cosas.map({ cosa => suma += cosa.peso() })
+		return (suma % 2) == 0
+	}
+	
+	method hayUnaCargaConPeso(cantidad) = cosas.any({ cosa => cosa.peso() == cantidad })
+	
+	method estaExcedidoDePeso() {
+		var suma = 0
+		cosas.forEach({ cosa => suma += cosa.peso() })
+		return (suma + tara) > 2500
+	}
+	
+	method nivelDePeligrosidad(predicado) = cosas.any({ predicado })
+	
+	method conNivelDePeligrosidad(nivelPeligrosidad) = self.nivelDePeligrosidad(
+		{ cosa => cosa.nivelPeligrosidad() == nivelPeligrosidad }
+	)
+	
+	method tieneMayorNivelDePeligrosidad(nivelPeligrosidad) = self.nivelDePeligrosidad(
+		{ cosa => cosa.nivelPeligrosidad() > nivelPeligrosidad }
+	)
+	
+	method conMayorNivelDePeligrosidadQue(otraCosa) = self.tieneMayorNivelDePeligrosidad(
+		otraCosa.peso()
+	)
+	
+	method puedeCircular(
+		nivelPeligrosidad
+	) = (!self.estaExcedidoDePeso()) && (!self.tieneMayorNivelDePeligrosidad(nivelPeligrosidad))
+}
+
+object destino {
+	
 }

@@ -6,4 +6,27 @@ describe "Tests de Camion" {
     camion.cargar(knightRider)
     assert.equals(#{knightRider}, camion.cosas())
   }
+  
+  test "el camión tiene dos cosas cargadas" {
+    camion.cargar(knightRider)
+    camion.cargar(bumblebee)
+    assert.equals(#{knightRider, bumblebee}, camion.cosas())
+  }
+  
+  test "el camión tiene cargada solo a knightRider después de descargar a bumblebee" {
+    camion.cargar(knightRider)
+    camion.cargar(bumblebee)
+    camion.descargar(bumblebee)
+    assert.equals(#{knightRider}, camion.cosas())
+  }
+  
+  test "hay una carga con peso 500" {
+    camion.cargar(knightRider)
+    assert.equals(true, camion.hayUnaCargaConPeso(500))
+  }
+  
+  test "esta excedido de peso" {
+    camion.cargar(knightRider)
+    assert.equals(false, camion.estaExcedidoDePeso())
+  }
 }

@@ -5,9 +5,7 @@ object knightRider {
 }
 
 object arenaAGranel {
-	var peso = null
-	
-	method peso() = peso
+	method peso(cantidad) = cantidad
 	
 	method nivelPeligrosidad() = 1
 }
@@ -48,4 +46,20 @@ object residuoRadiactivo {
 	method peso() = peso
 	
 	method nivelPeligrosidad() = 200
+}
+
+object contenedorPortuario {
+	var contenedor = #{}
+	
+	method peso() = contenedor.sum({ cosa => cosa.peso() }) + 100
+	
+	method nivelPeligrosidad() {
+		if (contenedor.isEmpty()) {
+			return 0
+		} else {
+			return contenedor.toList().map({ cosa => cosa.nivelPeligrosidad() }).max()
+		}
+	}
+	
+	method embalaje(cosa) = cosa.peso() / 2
 }
