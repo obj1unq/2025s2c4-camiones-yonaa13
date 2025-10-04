@@ -48,4 +48,21 @@ describe "Tests de Camion" {
     camion.cargar(bumblebee)
     assert.equals(bumblebee, camion.cosaMasPesadaDelCamion())
   }
+  test "peso de cada cosa del camion (knightRider 500, bumblebee 800)" {
+    camion.cargar(knightRider)
+    camion.cargar(bumblebee)
+    assert.equals([500,800], camion.pesoDeCadaCosaDelCamion())
+  }
+  test "cantidad de bultos del camion 9" {
+    contenedorPortuario.cargar(knightRider)
+    contenedorPortuario.cargar(bumblebee)
+    embalaje.cosa(residuoRadiactivo)
+    camion.cargar(embalaje)
+    camion.cargar(contenedorPortuario)
+    camion.cargar(arenaAGranel)
+    paqueteDeLadrillos.cantidad(50)
+    camion.cargar(paqueteDeLadrillos)
+    camion.cargar(bateríaAntiaérea)
+    assert.equals(9, camion.cantidadDeBultosDelCamion())
+  }
 }

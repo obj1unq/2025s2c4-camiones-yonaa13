@@ -2,7 +2,7 @@ import cosas.*
 
 object camion {
 	var property cosas = #{}
-	var property capacidad = 2500
+	var property capacidad = 22500
 	const tara = 1000
 	
 	method tieneCargado(unaCosa) = cosas.contains(unaCosa)
@@ -64,8 +64,7 @@ object camion {
 			return cosas.max({ cosa => cosa.peso() })
 		}
 	}
+	method pesoDeCadaCosaDelCamion() = cosas.map({ cosa => cosa.peso() })
+	method cantidadDeBultosDelCamion() = cosas.sum({ cosa => cosa.bultos() })
 }
 
-object destino {
-	
-}
