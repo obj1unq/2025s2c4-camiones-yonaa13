@@ -1,4 +1,5 @@
 import cosas.*
+import almacen.*
 
 object camion {
 	var property cosas = #{}
@@ -64,7 +65,15 @@ object camion {
 			return cosas.max({ cosa => cosa.peso() })
 		}
 	}
+	
 	method pesoDeCadaCosaDelCamion() = cosas.map({ cosa => cosa.peso() })
+	
 	method cantidadDeBultosDelCamion() = cosas.sum({ cosa => cosa.bultos() })
+	
+	method camionAccidentado() = cosas.forEach({ cosa => cosa.accidente() })
+	
+	method llagoAlAlmacen() {
+		almacen.guardarCarga(cosas)
+		cosas.clear()
+	}
 }
-
