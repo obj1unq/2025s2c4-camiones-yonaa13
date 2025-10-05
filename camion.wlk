@@ -1,15 +1,17 @@
 import cosas.*
 import almacen.*
+import camino.*
 
 object camion {
 	var property cosas = #{}
 	var property capacidad = 22500
 	const tara = 1000
 	
-	method tieneCargado(unaCosa) = cosas.contains(unaCosa)
 	
 	method cargar(unaCosa) {
-		if ((!cosas.contains(unaCosa)) && (unaCosa.peso() <= capacidad)) {
+		if ((cosas.contains(unaCosa)) || (unaCosa.peso() > capacidad)) {
+			self.error("No se puede cargar algo ya cargado")
+		}else{ 
 			cosas.add(unaCosa)
 			capacidad -= unaCosa.peso()
 		}
@@ -19,7 +21,9 @@ object camion {
 		if (cosas.contains(unaCosa)) {
 			cosas.remove(unaCosa)
 			capacidad += unaCosa.peso()
-		}
+		}else{
+			self.error("No se puede descargar algo que no está cargado")
+		}	
 	}
 	
 	method esCamionConPesoPar() {
@@ -30,29 +34,27 @@ object camion {
 	
 	method hayUnaCargaConPeso(cantidad) = cosas.any({ cosa => cosa.peso() == cantidad })
 	
-	method estaExcedidoDePeso() {
+	method estaExcedidoDePeso(cantidad) {
 		var suma = 0
 		cosas.forEach({ cosa => suma += cosa.peso() })
-		return (suma + tara) > 2500
+		return (suma + tara) > cantidad
 	}
 	
-	method nivelDePeligrosidad(predicado) = cosas.any({ predicado })
-	
-	method conNivelDePeligrosidad(nivelPeligrosidad) = self.nivelDePeligrosidad(
+	method conNivelDePeligrosidad(nivelPeligrosidad) = cosas.find(
 		{ cosa => cosa.nivelPeligrosidad() == nivelPeligrosidad }
 	)
 	
-	method tieneMayorNivelDePeligrosidad(nivelPeligrosidad) = self.nivelDePeligrosidad(
+	method tieneMayorNivelDePeligrosidad(nivelPeligrosidad) = cosas.filter(
 		{ cosa => cosa.nivelPeligrosidad() > nivelPeligrosidad }
-	)
+	).asSet()
 	
 	method conMayorNivelDePeligrosidadQue(otraCosa) = self.tieneMayorNivelDePeligrosidad(
 		otraCosa.peso()
 	)
 	
-	method puedeCircular(
-		nivelPeligrosidad
-	) = (!self.estaExcedidoDePeso()) && (!self.tieneMayorNivelDePeligrosidad(nivelPeligrosidad))
+
+
+	method puedeCircular(nivelPeligrosidad) = (!self.estaExcedidoDePeso(2500)) && (self.tieneMayorNivelDePeligrosidad(nivelPeligrosidad) == #{})
 	
 	method pesaEntre(pesoMinimo, pesoMaximo) = cosas.any(
 		{ cosa => (cosa.peso() >= pesoMinimo) && (cosa.peso() <= pesoMaximo) }
@@ -62,7 +64,7 @@ object camion {
 		if (cosas.isEmpty()) {
 			return null
 		} else {
-			return cosas.max({ cosa => cosa.peso() })
+		    return cosas.max({ cosa => cosa.peso() })
 		}
 	}
 	
@@ -72,8 +74,15 @@ object camion {
 	
 	method camionAccidentado() = cosas.forEach({ cosa => cosa.accidente() })
 	
-	method llagoAlAlmacen() {
-		almacen.guardarCarga(cosas)
+	method llegoADestino(lugar) {
+		lugar.guardarCarga(cosas)
 		cosas.clear()
+	}
+	
+	method transportar(destino, camino) {
+		if (camino.soportaCargaDe(self))
+		 {
+			self.llegoADestino(destino)
+		 }
 	}
 }
